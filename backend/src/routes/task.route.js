@@ -18,7 +18,12 @@ router.get("/", async (req, res) => { //GET nos permite hacer consultas a la bas
 
 router.post("/", async (req, res) => { //POST nos permite almacenar los datos en la base de MongoDB
     const {tittle, description} = req.body;
-    const task = new Task({tittle, description});
+    const task = new Task(
+        {tittle, 
+         description
+
+        }
+    );
     console.log(req.body);
     await task.save();
     res.json({status: "tarea guardada"});
