@@ -17,24 +17,40 @@ router.get("/", async (req, res) => { //GET nos permite hacer consultas a la bas
 });
 
 router.post("/", async (req, res) => { //POST nos permite almacenar los datos en la base de MongoDB
-    const {tittle, description} = req.body;
+    const {title, description, status, userId} = req.body;
     const task = new Task(
-        {tittle, 
-         description
+        {title, 
+         description,
+         status,
+         userId
 
         }
     );
-    console.log(req.body);
-    await task.save();
-    res.json({status: "tarea guardada"});
+    
+    try {
+        await task.save(); // Guarda la tarea en la base de datos
+        res.status(200).json({ status: "Tarea guardada", task }); // Responde con éxito
+      } catch (error) {
+        res.status(400).json({ message: error.message }); // Maneja errores
+      }
 });
 
 router.put("/:id", async (req, res) =>{//PUT nos permite actualizar los datos el la DB
-    const {tittle, description} = req.body;
-    const newTask = {tittle, description};
-    await Task.findByIdAndUpdate(req.params.id, newTask);
+    const {title, description, updateAt, status, userId} = req.body;
+    const newTask = {
+        title, 
+         description,
+         status,
+         userId,
+         updatedAt: Date.now() // Actualiza la fecha
+    };
+    await Task.findByIdAndUpdate(req.params.id, newTask, {
+        new: true, // Devuelve el documento actualizado
+        runValidators: true // Ejecuta las validaciones del esquema
+      });
     console.log(req.params.id); 
     res.json({status: "tarea actualizada" });
+
 });
 
 router.delete("/:id", async(req, res)=>{//Delete nos permite borrar los datos en la DB
