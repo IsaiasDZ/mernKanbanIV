@@ -9,7 +9,7 @@
     justify-content: space-around;
     align-items: center;
     color: #3d3d3d;
-    background: rgb(243, 243, 243);
+    background: rgb(255, 255, 255);
     z-index: 1000; /* Asegura que esté por encima de otros elementos */
   }
   
